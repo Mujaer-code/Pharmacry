@@ -1,5 +1,5 @@
 window.onload = function () {
-  const currentVersion = '1.0';
+  const currentVersion = '1.1';
   const savedVersion = localStorage.getItem('appVersion');
 
   if (savedVersion !== currentVersion) {
