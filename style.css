@@ -180,6 +180,9 @@ body::before {
 	pointer-events: none;
 	transition: .3s ease;
 	justify-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .popup-info.active {
@@ -822,7 +825,6 @@ body::before {
 
 
 	.winner-image {
-		width: 250px;
 		height: 250px;
 		border-radius: 5px;
 		margin-bottom: 20px;
