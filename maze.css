@@ -333,13 +333,15 @@
   }
 
   .maze-section {
-    
+    height: 130vh;
   }
 
   #menu {
-    height: 100vh;
+    height: 130vh;
     justify-content: center;
+    overflow-y: auto;
   }
+
   .header-mazegame {
     width: 80%;
   }
