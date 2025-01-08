@@ -789,16 +789,21 @@ body::before {
 	}
 
 	.popup-info .game-rules {
-	
+		width: 320px;
+		height: 230px;
 	}
 
 	.popup-info .exit-btn {
 		top: 2%;
 	}
 
+	.kontener {
+		height: 130vh;
+	}
+	
 	.popup-info {
 		width: 80%;
-		height: 90vh;
+		height: 130vh;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
