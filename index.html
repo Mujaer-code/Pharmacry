@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pharmacry</title>
+  <link rel="icon" type="image/x-icon" href="image/logo.png">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link id="sesiDadu" rel="stylesheet" type="text/css" href="dadu.css" disabled>
+  <link id="sesiMaze" rel="stylesheet" type="text/css" href="maze.css" disabled>
+</head>
+
+<body>
+
+
+<main class="main"> 
+
+<div class="kontener">
+<button class="feedback">GIVE FEEDBACK</button>
+    <div class="game-over-box">
+        <h2>ELIMINATED</h2>
+        <div class="kalah">Waduh Anda kurang beruntung, nanti coba lagi yaa..</div>    </div>
+
+    <div class="winning-box">
+        <h2>YOU WIN !</h2>
+      </div>
+
+      <div id="loading-screen">
+        <div id="loading-bar-container">
+          <div id="loading-bar"></div>
+        </div>
+        <p id="loading-text">Lagi ngeracik...</p>
+      </div>
+
+  <section class="home">
+          <div class="home-content">
+            <h2>Welcome to</h2>
+            <h1>Pharmacry</h1>
+            <p>Siap-siap mengerjakan tantangan di luar nastar dan buktikan bahwa anda adalah RAJA-nya. Lalu, akan ada hadiah menanti dengan total ribuan rupiah menunggu di akhir perjalanan!</p>
+            <button class="start-btn">START GAME</button>
+          </div>
+      </section>
+
+  <!-- Game MAZEEE -->
+  <section class="maze-section">
+    
+    <div id="menu">
+      <nav class="header-mazegame">
+      <h1>Maze Game</h1>
+      <p>Apoteker akan visite ke rumah pasien, namun karena belum hafal jalannya, ia bertanya pada tiga temannya yang juga hanya ingat petunjuk seadanya.</p></nav>
+      <div class="mazes">
+        <div class="maze-container"></div>
+        <div class="maze-container"></div>
+        <div class="maze-container"></div>
+      </div>
+
+      <button id="play-button">Ready</button>
+    </div>
+
+    <div id="maze-start">
+      <div id="maze">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+        <div class="cell" data-index="9"></div>
+
+        <div class="cell" data-index="10"></div>
+        <div class="cell" data-index="11"></div>
+        <div class="cell" data-index="12"></div>
+        <div class="cell" data-index="13"></div>
+        <div class="cell" data-index="14"></div>
+
+        <div class="cell" data-index="15"></div>
+        <div class="cell" data-index="16"></div>
+        <div class="cell" data-index="17"></div>
+        <div class="cell" data-index="18"></div>
+        <div class="cell" data-index="19"></div>
+
+        <div class="cell" data-index="20"></div>
+        <div class="cell" data-index="21"></div>
+        <div class="cell" data-index="22"></div>
+        <div class="cell" data-index="23"></div>
+        <div class="cell" data-index="24"></div>
+        <div class="cell" data-index="25"></div>
+        <div class="cell" data-index="26"></div>
+        <div class="cell" data-index="27"></div>
+        <div class="cell" data-index="28"></div>
+        <div class="cell" data-index="29"></div>
+        <div class="cell" data-index="30"></div>
+        <div class="cell" data-index="31"></div>
+        <div class="cell" data-index="32"></div>
+
+        <div class="cell" data-index="33"></div>
+        <div class="cell" data-index="34"></div>
+        <div class="cell" data-index="35"></div>
+        <div class="cell" data-index="36"></div>
+        <div class="cell" data-index="37"></div>
+        <div class="cell" data-index="38"></div>
+        <div class="cell" data-index="39"></div>
+        <div class="cell" data-index="40"></div>
+
+        <div class="cell" data-index="41"></div>
+        <div class="cell" data-index="42"></div>
+        <div class="cell" data-index="43"></div>
+        <div class="cell" data-index="44"></div>
+        <div class="cell" data-index="45"></div>
+        <div class="cell" data-index="46"></div>
+        <div class="cell" data-index="47"></div>
+        <div class="cell" data-index="48"></div>
+
+        <div class="cell" data-index="49"></div>
+        <div class="cell" data-index="50"></div>
+        <div class="cell" data-index="51"></div>
+        <div class="cell" data-index="52"></div>
+        <div class="cell" data-index="53"></div>
+        <div class="cell" data-index="54"></div>
+        <div class="cell" data-index="55"></div>
+        <div class="cell" data-index="56"></div>
+
+        <div class="cell" data-index="57"></div>
+        <div class="cell" data-index="58"></div>
+        <div class="cell" data-index="59"></div>
+        <div class="cell" data-index="60"></div>
+        <div class="cell" data-index="61"></div>
+        <div class="cell" data-index="62"></div>
+        <div class="cell" data-index="63"></div>
+        <div id="player"></div>
+        <div id="winning-marker"></div>
+
+      </div>
+
+      <div class="arrow-maze">
+          <button class="panah atas" data-direction="atas">↑</button>
+          <button class="panah kiri" data-direction="kiri">←</button>
+          <button class="panah kanan" data-direction="kanan">→</button>
+          <button class="panah bawah" data-direction="bawah">↓</button>
+      </div>
+          <p>Use the arrow keys to move.</p>
+
+    </div>
+
+  </section>
+  <!-- Game MAZEEE -->
+
+  <!-- Game Dadu -->
+  <section class="game-container">
+    <div class="game-content">
+     <div class="explain-container">
+            <h1>Dice Game</h1>
+              <div class="instruksi">
+                <h2>Aturan Permainan</h2>
+                <p>Pemain harus menggerakkan dadu di atas matriks. Setiap kali dadu bergerak, sisi-sisi dadu akan berputar, sehingga gambar di sisi bawah berubah sesuai dengan logika perputaran dadu.
+                </p>
+                <p>Dalam 3 langkah, tentukan urutan gerakan yang tepat sehingga gambar pada sisi bawah dadu selaras dengan gambar tertentu di matriks.</p>
+              </div>
+
+              <div class="tips">
+                <p><b>Tips:</b> Rencanakan langkah Anda sebelum menggerakkan dadu.</p>
+              </div>
+    
+      </div>
+
+    <!-- Matriks 4x4 -->
+        <div class="matrix-container">
+          <p class="step-counter">Remaining Steps : 3</p>
+            <div class="matrix">
+                <div class="sell" data-logo="🧬"></div>
+                <div class="sell" data-logo="🔵"></div>
+                <div class="sell" data-logo="👩‍🔬"></div>
+                <div class="sell" data-logo="❌"></div>
+                <div class="sell" data-logo="🔬"></div>
+                <div class="sell" data-logo="🟢"></div>
+                <div class="sell" data-logo="🧬"></div>
+                <div class="sell" data-logo="🔵"></div>
+                <div class="sell" data-logo="👩‍🔬"></div>
+                <div class="sell" data-logo="❌"></div>
+                <div class="sell" data-logo="🔬"></div>
+                <div class="sell" data-logo="🟢"></div>
+                <div class="sell" data-logo="🧬"></div>
+                <div class="sell" data-logo="🔵"></div>
+                <div class="sell" data-logo="👩‍🔬"></div>
+                <div class="sell" data-logo="❌"></div>
+            </div>
+
+               <div class="arrow-controls">
+                    <button class="arrow up" data-direction="up">↑</button>
+                    <button class="arrow left" data-direction="left">←</button>
+                    <button class="arrow right" data-direction="right">→</button>
+                    <button class="arrow down" data-direction="down">↓</button>
+            </div>
+              <p>Use the arrow keys to move.</p>
+
+          </div>
+
+         <!-- Referensi Kerangka Kubus -->
+        <div class="cube-container">
+          <h2>Posisi Dadu</h2>
+            <div class="cube">
+                <div ></div>
+                <div class="side">🔬</div>
+                <div class="side">👩‍🔬</div>
+                
+                <div></div>
+                <div class="side">🧬</div>
+                <div></div>
+                
+                <div class="side">❌</div>
+                <div class="side" id="bottom">🟢</div>
+                <div></div>
+                
+                <div ></div>
+                <div class="side">🔵</div>
+                <div ></div>
+            </div>
+        </div>      
+    </div>
+  </section>
+  <!-- Game Dadu -->
+
+  <!-- Quiz Game -->
+  <section class="quiz-section">
+      
+     <div class="quiz-box">
+      <div class="timer-container">
+        <div class="timer">00.00</div></div>
+        <h1>Pharmacry</h1>
+        <div class="quiz-header"></div>
+
+        <h2 class="question-text">What does html stand for ?</h2>
+
+        <div class="option-list">
+          <div class="option">
+            <span>A. apa</span>
+          </div>
+
+          <div class="option">
+            <span>B. iya</span>
+          </div>
+
+          <div class="option">
+            <span>C. aneh</span>
+          </div>
+
+          <div class="option">
+            <span>D. lol</span>
+          </div>
+        </div>
+
+      </div>
+      
+      <div class="result-box">
+        <div class="winner-image"></div>
+          <h2>You're a Winner!</h2>
+          <p>Waduh kerenn poll anjirr, SELAMAT. Sekarang ambil hadiahmu!</p>
+          <button class="claim-box">CLAIM</button>
+        
+      </div>
+
+      <div class="eliminated-box">
+        <h2>ELIMINATED</h2>
+        <div class="eliminated-kalah">Waduh Anda kurang beruntung, nanti coba lagi yaa..</div>
+      </div>
+
+      <div class="cheating-box">
+        <h2>ELIMINATED</h2>
+        <div class="cheat">Hayolohh... mau ngapain ?? Jangan ya dek yaa..</div>
+      </div> 
+  </section>
+  <!-- Quiz Game -->  
+      
+
+
+  </main>
+
+
+  <div class="popup-info">
+    <button class="exit-btn">X</button>
+    <div class="game-rules"></div>
+    <h2>Game Rules</h2>
+    <div class="info">
+    <p>Ada beberapa peraturan yang perlu dipatuhi:</p>
+    <ul> 
+    <li>Setiap jawaban yang salah akan langsung dieliminasi dari permainan.</li>
+    <li>Tidak ada kesempatan untuk mengulang, jadi pilih dengan bijak!</li>
+    <li>Jangan mencoba curang atau menekan tombol secara acak!</li>
+    </ul>
+    
+    </div>
+
+    <div class="btn-group">
+      <a href="#" class="info-btn continue-btn">Iyee iyee ~</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+  <script>
+     function deactivateSessionCSS(sessionId) {
+            const link = document.querySelector(`#${sessionId}`);
+            if (link) {
+                link.disabled = true;
+            }
+        }
+
+        function activateSessionCSS(sessionId) {
+            const link = document.querySelector(`#${sessionId}`);
+            if (link) {
+                link.disabled = false;
+            }
+        }
+
+        function deactivateSessionJS(sessionId) {
+            const script = document.querySelector(`#${sessionId}-js`);
+            if (script) {
+                script.remove();
+            }
+        }
+
+        function activateSessionJS(sessionId) {
+            const script = document.createElement('script');
+            script.id = `${sessionId}-js`;
+            script.src = `${sessionId}.js`; // Menyesuaikan nama file
+            document.body.appendChild(script);
+        }
+
+        //Default mengaktifkan SesiMaze
+        activateSessionCSS('sesiMaze');
+        activateSessionJS('sesiMaze');
+
+
+  </script>
+  
+  
+</body>
+</html>
+

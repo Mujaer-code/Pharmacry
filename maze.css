@@ -1,0 +1,393 @@
+/* style.css */
+* {
+  margin: 0;
+}
+
+:root {
+  --tile-size: 40;
+  --box-maze: 30;
+}
+
+.maze-section {
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background: #232429;
+  color: #fff;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 0;
+  opacity: 0;
+  flex-direction: column;
+}
+
+.maze-section.active {
+  display: flex;
+  opacity: 1;
+  z-index: 100;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+#menu {
+  position: absolute;
+  align-items: center;
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+  transition: .5s ease;
+}
+
+#menu.deactive {
+  display: none;
+}
+
+.header-mazegame {
+  margin-bottom: 20px;
+  text-align: center;
+  width: 60%;
+
+}
+
+.header-mazegame h1 {
+  font-size: 54px;
+  font-family: gos;
+  letter-spacing: 2px;
+  margin-bottom: -10px;
+}
+
+.header-mazegame p {
+  font-size: 15px;
+  color: #DDE0E2;
+}
+
+#play-button {
+  width: 200px;
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #04AA6D;
+  border: none;
+  color: white;
+  transition: .2s ease;
+  border-radius: 5px;
+}
+
+#play-button:hover {
+  background: #1d7554;
+  transform: scale(1.1);
+}
+
+#maze-start {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  transition: .2s ease;
+}
+
+#maze-start.active {
+  display: flex;
+}
+
+.mazes {
+  display: flex;
+  gap: 70px;
+  margin: 40px;
+  box-sizing: border-box;
+}
+
+.maze-container {
+  width: 240px;
+  height: 240px;
+  background: #333;
+  position: relative;
+  box-shadow: 0 0 0 3px white;
+}
+
+.maze-container .tile {
+  box-sizing: border-box;
+  height: 30px;
+  width: 30px;
+  position: absolute;
+}
+
+.maze-container p {
+  font-size: 16px;
+}
+
+#maze {
+  width: 320px;
+  height: 320px;
+  position: relative;
+  margin: 20px auto;
+  box-shadow: 0 0 0 3px white;
+  background: #333;
+  display: grid;
+  grid-template-columns: repeat(8, 40px);
+  grid-template-rows: repeat(8, 40px);
+}
+
+#maze p {
+  font-size: 20px;
+}
+
+
+#player {
+  width: 40px;
+  height: 40px;
+  background: white;
+  position: absolute;
+
+}
+
+#winning-marker {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: yellow;
+  z-index: 1;
+
+}
+
+#game-over {
+  text-align: center;
+}
+
+
+/* Kotak untuk setiap sell dalam maze */
+.cell {
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border: 1px solid #484848;
+}
+
+.cell.wall {
+  background: #333;
+}
+
+.cell.red {
+  background: red;
+}
+.cell.path {
+  background: #fff;
+}
+
+.cell.player {
+  background: yellow;
+}
+
+
+
+
+#labels {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 5px;
+}
+
+.column-labels {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.cell-label {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid #484848;
+}
+
+.arrow-maze {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 180px;
+    margin: 15px;
+    gap: 10px;
+    align-items: center;
+}
+
+.panah {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.panah:active,
+.panah.pressed {
+    background: #3CABB1;
+    transform: translateY(2px);
+}
+
+.panah.atas {
+    grid-column: 2;
+}
+
+.panah.bawah {  
+    grid-row: 2;
+}
+
+.panah.kiri {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.panah.kanan {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+@media (max-width: 768px) {
+  :root {
+  --tile-size: 30;
+  --box-maze: 20;
+  }
+  
+  #menu {
+    transition: .4s ease;
+  }
+
+  .mazes {
+    gap: ;
+    margin: ;
+  }
+
+  .maze-container {
+    width: calc(var(--box-maze) * 8px);
+    height: calc(var(--box-maze) * 8px);
+    background: #333;
+    position: relative;
+    box-shadow: 0 0 0 2px white;
+  }
+
+  .maze-container .tile {
+    box-sizing: border-box;
+    height: calc(var(--box-maze) * 1px);
+    width: calc(var(--box-maze) * 1px);
+  }
+
+  .maze-container p {
+    font-size: 12px;
+  }
+
+  #maze {
+  width: calc(var(--tile-size) * 8px);
+  height: calc(var(--tile-size) * 8px);
+  margin: 20px auto;
+  box-shadow: 0 0 0 3px white;
+  grid-template-columns: repeat(8, calc(var(--tile-size) * 1px));
+  grid-template-rows: repeat(8, calc(var(--tile-size) * 1px));
+  }
+
+  #maze p {
+    font-size: 17px;
+  }
+  .cell {
+    width: calc(var(--tile-size) * 1px);
+    height: calc(var(--tile-size) * 1px);
+  }
+
+  #player {
+    width: calc(var(--tile-size) * 1px);
+    height: calc(var(--tile-size) * 1px);
+  }
+
+  #winning-marker {
+    width: calc(var(--tile-size) * 1px);
+    height: calc(var(--tile-size) * 1px);
+  }
+
+}
+
+@media (max-width: 480px) {
+  :root {
+    --tile-size: 25;
+    --box-maze: 15;
+  }
+
+  .maze-section {
+    
+  }
+
+  #menu {
+    height: 100%;
+    justify-content: center;
+  }
+  .header-mazegame {
+    width: 80%;
+  }
+
+  .header-mazegame h1 {
+    font-size: 30px;
+    margin-bottom: 0;
+  }
+
+  .header-mazegame p {
+    font-size: 11px;
+  }
+  .mazes { 
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    margin: 20px;
+    align-items: center;
+  }
+
+  #maze {
+    
+  }
+
+  #maze p {
+    font-size: 15px;
+
+  }
+
+  .maze-container {
+    box-shadow: 0 0 0 2px white;
+  }
+
+  .maze-container p {
+    font-size: 10px;
+  }
+  .cell {
+   
+  }
+
+  #player {
+    
+  }
+
+  #winning-marker {
+  
+  }
+
+
+
+}

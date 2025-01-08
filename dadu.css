@@ -1,0 +1,409 @@
+
+.game-container {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    /*background: linear-gradient(-124deg,#E5275F, #F57569);*/
+    background:#232429 ;
+    position: relative;
+    display: none;
+    opacity: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: .2s ease;
+    transition-delay: .2s;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.game-container.active {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 100;
+}
+
+
+
+.game-content {
+    position: relative;
+    display: inline-flex;
+    justify-content: space-between;
+    width: 80%;
+    height: 90%;
+    background: transparent;
+    pointer-events: auto;
+}
+
+
+
+
+/* Referensi Kubus */
+.cube-container {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 70px;
+    overflow: hidden;
+    align-items: center;
+}
+
+.cube-container h2 {
+    font-size: 25px;
+    color: #fff;
+    align-content: center;
+    text-align: center;
+    width: 150px;
+    height: 35px;
+}
+
+.cube {
+    display: grid;
+    grid-template-columns: repeat(3, 35px);
+    grid-template-rows: repeat(4, 35px);
+    gap: 3px;
+    width: 140px;
+    justify-content: center;
+    margin: 10px;
+    padding: 20px;
+    border: 2px solid #fff;
+    border-radius: 10px;
+}
+
+.cube .side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background-color: #fff;
+    width: 35px;
+    height: 35px;
+}
+
+#bottom {
+    background-color: #FFCB3C; /* Starting point */
+}
+
+/* Matriks 4x4 */
+.matrix-container {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 25px;
+    
+}
+
+.matrix {
+    display: grid;
+    grid-template-columns: repeat(4, 60px);
+    grid-template-rows: repeat(4, 60px);
+    gap: 5px;
+    margin-bottom: 30px;
+}
+
+.matrix p {
+    align-content: center;
+    color: #fff;
+    font-size: 14px;
+}
+
+.sell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background-color: #fff;
+    width: 60px;
+    height: 60px;
+    position: relative;
+}
+
+.sell.active {
+    background-color: #FFCB3C; /* Sama dengan warna sisi bawah kubus */
+}
+
+.sell::before {
+    content: attr(data-logo);
+}
+
+.sell.visited {
+    background-color: lightgray; /* Warna untuk kotak yang sudah dikunjungi */
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.sell.player {
+    background-color: yellow; /* Warna untuk posisi pemain */
+    border: 2px solid black;
+}
+
+
+.step-counter {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    padding: 5px 15px 5px 15px;
+    border: 2px solid #fff;
+    border-radius: 25px;
+    margin: 20px;
+}
+
+.explain-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    width: 30%;
+}
+
+.explain-container h1 {
+    font-size: 30px;
+    letter-spacing: 1px;
+    text-align: center;
+    align-content: center;
+    font-family: gos;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 2px;
+    margin-bottom: 20px;
+}
+
+.explain-container h2 {
+    font-size: 20px;
+    color: #fff;
+}
+
+.explain-container p {
+    align-content: center;
+    color: #DDE0E2;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.explain-container .tips {
+
+    margin-bottom: 20px;
+}
+
+.arrow-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    width: 180px;
+    margin: 15px;
+}
+
+.arrow {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.arrow:active,
+.arrow.pressed {
+    background: #3CABB1;
+    transform: translateY(2px);
+}
+
+.arrow.up {
+    grid-column: 2;
+}
+
+.arrow.down {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.arrow.left {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.arrow.right {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+@media (max-width: 768px) {
+    .game-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .explain-container {
+        width: 100%;
+    }
+
+    .explain-container h1 {
+        font-size: 20px;
+    }
+
+    .explain-container h2 {
+        font-size: 15px;
+        color: #fff;
+    }
+
+    .explain-container p {
+        align-content: center;
+        color: #DDE0E2;
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .explain-container .tips {
+        margin-bottom: 0px;
+    }
+
+    .matrix-container {
+        width: 100%;
+        }
+
+    .matrix {
+        display: grid;
+        grid-template-columns: repeat(4, 30px);
+        grid-template-rows: repeat(4, 30px);
+        gap: 5px;
+        margin-bottom: 20px;
+    }
+
+    .matrix p {
+        align-content: center;
+        color: #fff;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .sell {
+        font-size: 17px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .step-counter {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 3px 10px 3px 10px;
+    }
+
+    .cube-container {
+        top: 30%;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+        margin-top: 0px;
+    }
+
+    .cube-container h2 {
+        font-size: 14px;
+        width: 100px;
+        height: 10px;
+    }
+
+    .cube {
+        grid-template-columns: repeat(3, 25px);
+        grid-template-rows: repeat(4, 25px);
+        gap: 3px;
+        width: 100px;
+        justify-content: center;
+        margin: 10px;
+        padding: 10px;
+        border: 2px solid #fff;
+        border-radius: 10px;
+    }
+
+    .cube .side {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        background-color: #fff;
+        width: 25px;
+        height: 25px;
+    }
+
+    .arrow-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 5px;
+        width: 180px;
+    }
+
+    .arrow {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        text-align: center;
+        border: 2px solid #fff;
+        border-radius: 5px;
+        background: transparent;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+    }
+}
+
+@media (max-width: 480px) {
+    
+    .game-content {
+        height: 100%;
+    }
+
+    .game-container {
+        justify-content: space-between;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        height: 130vh;
+
+    }
+
+
+    .cube-container {
+        width: 100%;
+        opacity: 0.5;
+        top: 28%;
+    }
+
+    .cube-container h2 {
+        font-size: 12px;
+    }
+
+    .explain-container p {
+        font-size: 10px;
+    }
+
+    .cube {
+        grid-template-columns: repeat(3, 20px);
+        grid-template-rows: repeat(4, 20px);
+        gap: 6px;
+        width: 100px;
+    }
+
+    .cube .side {
+        font-size: 12px;
+    }
+
+    .matrix {
+        grid-template-columns: repeat(4, 40px);
+        grid-template-rows: repeat(4, 40px);
+    }
+
+    .sell {
+        width: 40px;
+        height: 40px;
+    }
+
+
+
+
+}
