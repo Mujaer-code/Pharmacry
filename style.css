@@ -789,7 +789,7 @@ body::before {
 	}
 
 	.popup-info .game-rules {
-		width: 320px;
+		width: 250px;
 		height: 230px;
 	}
 
@@ -800,10 +800,10 @@ body::before {
 	.kontener {
 		height: 130vh;
 	}
-	
+
 	.popup-info {
 		width: 80%;
-		height: 130vh;
+		height: 100vh;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
