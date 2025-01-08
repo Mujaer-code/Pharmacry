@@ -239,6 +239,7 @@
     .game-content {
         display: flex;
         flex-direction: column;
+        justify-content: space-around;
     }
 
     .explain-container {
@@ -271,8 +272,8 @@
 
     .matrix {
         display: grid;
-        grid-template-columns: repeat(4, 30px);
-        grid-template-rows: repeat(4, 30px);
+        grid-template-columns: repeat(4, 40px);
+        grid-template-rows: repeat(4, 40px);
         gap: 5px;
         margin-bottom: 20px;
     }
@@ -285,9 +286,9 @@
     }
 
     .sell {
-        font-size: 17px;
-        width: 30px;
-        height: 30px;
+        font-size: 20px;
+        width: 40px;
+        height: 40px;
     }
 
     .step-counter {
@@ -370,8 +371,10 @@
 
     .cube-container {
         width: 100%;
-        opacity: 0.5;
+        opacity: 0.6;
         top: 28%;
+        transform: none;
+        position: static;
     }
 
     .cube-container h2 {
