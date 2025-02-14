@@ -11,6 +11,10 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <link id="sesiDadu" rel="stylesheet" type="text/css" href="dadu.css" disabled>
   <link id="sesiMaze" rel="stylesheet" type="text/css" href="maze.css" disabled>
+   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -229,12 +233,24 @@
 
   <!-- Quiz Game -->
   <section class="quiz-section">
-      
-     <div class="quiz-box">
-      <div class="timer-container">
+      <div class="quiz-header">
+       <h1>Pharmacry</h1>
+       <div class="line-header"></div>
+      </div>
+
+      <div class="quiz-container">
+
+  <div class="input-AI">
+        <div class="timer-container">
         <div class="timer">00.00</div></div>
-        <h1>Pharmacry</h1>
-        <div class="quiz-header"></div>
+
+    <video class="input_video"></video>
+    <canvas class="output_canvas"></canvas>
+    <p id="direction">Jawaban: </p>
+  </div>
+
+
+     <div class="quiz-box">      
 
         <h2 class="question-text">What does html stand for ?</h2>
 
@@ -257,6 +273,8 @@
         </div>
 
       </div>
+
+    </div>
       
       <div class="result-box">
         <div class="winner-image"></div>

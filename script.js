@@ -1,29 +1,29 @@
-window.onload = function () {
-  const currentVersion = '1.2';
-  const savedVersion = localStorage.getItem('appVersion');
+// window.onload = function () {
+//   const currentVersion = '1.2';
+//   const savedVersion = localStorage.getItem('appVersion');
 
-  if (savedVersion !== currentVersion) {
-    if (localStorage.getItem('quizStatus') === 'eliminated') {
-      localStorage.removeItem('quizStatus');
-      console.log('Status eliminated dihapus karena versi terbaru');
-    } else if (localStorage.getItem('quizStatus') === 'winner') {
-      localStorage.removeItem('quizStatus');
-      console.log('Status winner dihapus karena versi terbaru');
-    }
-    localStorage.setItem('appVersion', currentVersion); // Simpan versi baru
-  }
+//   if (savedVersion !== currentVersion) {
+//     if (localStorage.getItem('quizStatus') === 'eliminated') {
+//       localStorage.removeItem('quizStatus');
+//       console.log('Status eliminated dihapus karena versi terbaru');
+//     } else if (localStorage.getItem('quizStatus') === 'winner') {
+//       localStorage.removeItem('quizStatus');
+//       console.log('Status winner dihapus karena versi terbaru');
+//     }
+//     localStorage.setItem('appVersion', currentVersion); // Simpan versi baru
+//   }
 
-  const status = localStorage.getItem('quizStatus');
-  if (status === 'eliminated') {
-    showYourDead();
-  } else if (status === 'winner') {
-    youWin();
-  }
+//   const status = localStorage.getItem('quizStatus');
+//   if (status === 'eliminated') {
+//     showYourDead();
+//   } else if (status === 'winner') {
+//     youWin();
+//   }
 
-  if (status !== 'eliminated' && status !== 'winner') {
-    startLoading();
-  }
-};
+//   if (status !== 'eliminated' && status !== 'winner') {
+//     startLoading();
+//   }
+// };
 
 // DAFTAR AUDIO UNTUK DIMUAT DI AWAL
 const audioFiles = [
@@ -206,6 +206,7 @@ function nowquizTime() {
 	gameContainer.classList.remove('active');	
 	quizSection.classList.add ('active');
 	quizBox.classList.add ('active');
+	camera.start();
 	showQuestions(0);
 
 	currentAudio = new Audio('sound/quiz-game.mp3');
@@ -233,59 +234,253 @@ function copyTrap() {
 }}
 //JEBAKAN BATMAN//
 
+// Fungsi untuk menampilkan soal baru
 function showQuestions(index) {
-	
-	const questionText = document.querySelector('.question-text');
-	questionText.textContent = `${questions[index].numb}. ${questions[index].question}`;
+  const questionText = document.querySelector('.question-text');
+  questionText.textContent = `${questions[index].numb}. ${questions[index].question}`;
 
-	let optionTag = `<div class="option"><span>${questions[index].options[0]}</span></div>
-	<div class="option"><span>${questions[index].options[1]}</span></div>
-	<div class="option"><span>${questions[index].options[2]}</span></div>
-	<div class="option"><span>${questions[index].options[3]}</span></div>`;
+  let optionTag = `<div class="option"><span>${questions[index].options[0]}</span></div>
+  <div class="option"><span>${questions[index].options[1]}</span></div>
+  <div class="option"><span>${questions[index].options[2]}</span></div>
+  <div class="option"><span>${questions[index].options[3]}</span></div>`;
 
-	optionList.innerHTML = optionTag;
+  optionList.innerHTML = optionTag;
 
-	const option = document.querySelectorAll('.option');
-	for (let i = 0; i < option.length; i++) {
-		option[i].setAttribute('onclick', 'optionSelected(this)');
-	}
+  const option = document.querySelectorAll('.option');
+  for (let i = 0; i < option.length; i++) {
+    option[i].setAttribute('onclick', 'optionSelected(this)');
+  }
 
-	if (index > 1) {
-		TrapEnabled = true;
-	} else {
-		TrapEnabled = false;
-	}
+  // Fungsi untuk mulai deteksi jumlah tangan setelah nomor 2
+  if (index > 1) {
+    handsDetectionActive = true;
+    console.log("Deteksi tangan Aktif!")
+  } else {
+    handsDetectionActive = false;
+  }
+
+  // Reset cooldown agar gesture bisa dipakai lagi di soal baru
+  resetGestureDetection();
+  directionText.innerText = "Jawaban dipilih: ";
 }
 
+// Fungsi untuk reset gesture setelah soal baru muncul
+function resetGestureDetection() {
+  lastGesture = "";
+  gestureStartTime = null;
+  isCooldown = false;
+  canDetectGesture = false; // Matikan gesture sementara
+
+  setTimeout(() => {
+    canDetectGesture = true; // Aktifkan kembali gesture setelah jeda
+  }, 2000); // Jeda sebelum gesture bisa digunakan lagi
+}
+
+
+//Deteksi handgesture/////////////////////
+const videoElement = document.getElementsByClassName('input_video')[0];
+videoElement.style.transform = "scaleX(-1)";
+
+const canvasElement = document.getElementsByClassName('output_canvas')[0];
+const canvasCtx = canvasElement.getContext('2d');
+const directionText = document.getElementById("direction");
+
+let lastAnswer = "";
+let isCooldown = false;
+let lastDetectionTime = Date.now();
+const detectionTimeout = 3000; // 2 detik sebelum dianggap keluar
+let handsDetectionActive = false; // Untuk menunggu beberapa detik sebelum aktivasi
+
+
+function onResults(results) {
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+  // Mirror tampilan
+  canvasCtx.translate(canvasElement.width, 0);
+  canvasCtx.scale(-1, 1);
+
+  canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+  if (results.multiHandLandmarks) {
+    for (const landmarks of results.multiHandLandmarks) {
+      drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: '#00FF00', lineWidth: 2 });
+      drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', radius: 1 });
+
+      detectGesture(landmarks); // Panggil detectGesture setiap frame
+    }
+  }
+
+  // Deteksi jumlah tangan hanya setelah soal ke-3
+  if (handsDetectionActive) {
+    const handsPresent = results.multiHandLandmarks.length;
+
+    if (handsPresent === 2) {
+      lastDetectionTime = Date.now(); // Reset waktu deteksi
+    } else {
+      const currentTime = Date.now();
+      if (currentTime - lastDetectionTime > detectionTimeout) {
+        console.log("⚠️ Salah satu tangan hilang! Eliminasi!");
+        showEliminatedBox();
+      }
+    }
+  }
+
+  canvasCtx.restore();
+}
+
+
+let lastGesture = "";
+let gestureStartTime = Date.now()
+let canDetectGesture = false;
+const requiredStableTime = 500; // Butuh 2 detik agar gesture stabil
+
+
+function detectGesture(landmarks) {
+  const wrist = landmarks[0];
+  const indexFinger = landmarks[8];
+  const middleFinger = landmarks[12];
+  const ringFinger = landmarks[16];
+  const pinkyFinger = landmarks[20];
+
+  let raisedFingers = 0;
+
+  if (indexFinger.y < wrist.y - 0.4) raisedFingers++; 
+  if (middleFinger.y < wrist.y - 0.4) raisedFingers++; 
+  if (ringFinger.y < wrist.y - 0.4) raisedFingers++; 
+  if (pinkyFinger.y < wrist.y - 0.3) raisedFingers++; 
+
+  let selectedOption = "";
+
+  if (raisedFingers === 1) selectedOption = "A";
+  else if (raisedFingers === 2) selectedOption = "B";
+  else if (raisedFingers === 3) selectedOption = "C";
+  else if (raisedFingers === 4) selectedOption = "D";
+
+  // Jika gesture berubah, reset timer
+  if (selectedOption !== lastGesture) {
+    gestureStartTime = Date.now();
+    lastGesture = selectedOption;
+  }
+
+  // Jika gesture sama selama requiredStableTime (2 detik), baru diproses
+  if (Date.now() - gestureStartTime >= requiredStableTime && !isCooldown && selectedOption !== "") {
+    isCooldown = true;
+
+    setTimeout(() => {
+      chooseAnswer(selectedOption);
+      isCooldown = false;
+    }, 500); // Delay 1 detik sebelum bisa deteksi lagi
+
+    directionText.innerText = `Jawaban dipilih: ${selectedOption}`;
+  } 
+}
+
+
+// Fungsi untuk memilih jawaban berdasarkan gesture
+function chooseAnswer(option) {
+  const options = document.querySelectorAll('.option');
+
+  let selectedIndex = -1;
+  if (option === "A") selectedIndex = 0;
+  else if (option === "B") selectedIndex = 1;
+  else if (option === "C") selectedIndex = 2;
+  else if (option === "D") selectedIndex = 3;
+
+  if (selectedIndex !== -1 && options[selectedIndex]) {
+    optionSelected(options[selectedIndex]);
+  }
+}
+
+// Inisialisasi Mediapipe Hands
+const hands = new Hands({
+  locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+});
+
+hands.setOptions({
+  maxNumHands: 2,
+  modelComplexity: 0,
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
+});
+
+hands.onResults(onResults);
+
+// Inisialisasi kamera
+const camera = new Camera(videoElement, {
+  onFrame: async () => {
+    await hands.send({ image: videoElement });
+  },
+  width: 320,
+  height: 240
+});
+
+window.optionSelected = optionSelected;
+
 function optionSelected(answer) {
-	let userAnswer = answer.textContent;
-	let correctAnswer = questions[questionCount].answer;
-	let allOptions = optionList.children.length;
-	
-	if (userAnswer == correctAnswer) {
-		if (questionCount < questions.length - 1) {
-			quizSection.classList.add('correct');
-		
-			var audio = new Audio('sound/correct.mp3');
-			audio.play();
+  console.log("Jawaban yang diklik:", answer.textContent);
 
-			setTimeout (() => {
-			quizSection.classList.remove ('correct');
-			}, 1000);
-		}
+  let userAnswer = answer.textContent.trim();
+  let correctAnswer = questions[questionCount].answer.trim();
 
-		 if	(questionCount < questions.length - 1) {
- 			questionCount++;
-			showQuestions(questionCount);
-			}
+  console.log("User Answer:", userAnswer);
+  console.log("Correct Answer:", correctAnswer);
 
-		else {
-			showResultBox();
-			}
-		}
-	else {
-		showEliminatedBox();
-	}
+  if (userAnswer === correctAnswer) {
+    console.log("Jawaban benar!");
+
+    quizSection.classList.add('correct');
+    
+    var audio = new Audio('sound/correct.mp3');
+    audio.play();
+
+    setTimeout(() => {
+      quizSection.classList.remove('correct');
+    }, 1000);
+
+    // **✅ Cek jika sudah soal terakhir**
+    if (questionCount < questions.length - 1) {
+      questionCount++; // Pindah ke soal berikutnya
+      showQuestions(questionCount);
+    } else {
+      showResultBox(); // **Tampilkan hasil jika semua soal terjawab**
+    }
+
+  } else {
+    console.log("Jawaban salah!");
+    showEliminatedBox();
+  }
+}
+
+
+//Timer
+const timerElement = document.querySelector('.timer');
+let timeRemaining = 15 * 60;
+let timeInterval;
+
+// Fungsi untuk format menit dan detik
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes} : ${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+}
+
+function startTimer (){
+  timeInterval = setInterval (() => {
+    timeRemaining--;
+    timerElement.textContent = `${formatTime(timeRemaining)}`;
+
+    if (timeRemaining > 0 && timeRemaining <= 15) {
+      var audio = new Audio('sound/alarm.mp3');
+      audio.play();
+      quizSection.classList.toggle("eliminated");
+    }
+
+    if (timeRemaining <= 0) {
+      clearInterval(timeInterval);
+      showEliminatedBox();
+    }
+  }, 1000);
 }
 
 
@@ -295,6 +490,11 @@ function showResultBox (){
 	var audio = new Audio('sound/winner.mp3');
 	audio.play();
 	quizSection.classList.add ('winner');
+
+	document.querySelector('.quiz-header').style.display = 'none';
+  document.querySelector('.output_canvas').style.display = 'none';
+  document.getElementById('direction').style.display = 'none';
+  camera.stop();
 
 	clearInterval(timeInterval);
 	timerElement.classList.add('deactive');
@@ -312,6 +512,11 @@ function showEliminatedBox (){
 	stopCurrentAudio();
 	var audio = new Audio('sound/gun.mp3');
 	audio.play();
+
+  document.querySelector('.quiz-header').style.display = 'none';
+	document.querySelector('.output_canvas').style.display = 'none';
+  document.getElementById('direction').style.display = 'none';
+  camera.stop();
 
 
 	localStorage.setItem('quizStatus', 'eliminated');
@@ -394,54 +599,25 @@ document.querySelector('.claim-box').addEventListener('click', function () {
     }, 100); // Waktu yang sama dengan durasi animasi (1s)
 });
 
-//Timer
-const timerElement = document.querySelector('.timer');
-let timeRemaining = 15 * 60;
-let timeInterval;
 
-// Fungsi untuk format menit dan detik
-function formatTime(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${minutes} : ${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-}
+// // Mencegah akses DevTools (Inspect Element)
+// document.addEventListener('keydown', function (e) {
+//   // Cegah F12 (DevTools)
+//   if (e.key === 'F12') {
+//     e.preventDefault();
+//   }
+//   // Cegah Ctrl+Shift+I (Inspect Element)
+//   if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+//     e.preventDefault();
+//   }
+//   // Cegah Ctrl+U (View Source)
+//   if (e.ctrlKey && e.key === 'U') {
+//     e.preventDefault();
+//   }
+// });
 
-function startTimer (){
-	timeInterval = setInterval (() => {
-		timeRemaining--;
-		timerElement.textContent = `${formatTime(timeRemaining)}`;
+// // Mencegah klik kanan
+// document.addEventListener('contextmenu', function (e) {
+//   e.preventDefault();
+// });
 
-		if (timeRemaining > 0 && timeRemaining <= 15) {
-			var audio = new Audio('sound/alarm.mp3');
-			audio.play();
-			quizSection.classList.toggle("eliminated");
-		}
-
-		if (timeRemaining <= 0) {
-			clearInterval(timeInterval);
-			showEliminatedBox();
-		}
-	}, 1000);
-}
-
-
-// Mencegah akses DevTools (Inspect Element)
-document.addEventListener('keydown', function (e) {
-  // Cegah F12 (DevTools)
-  if (e.key === 'F12') {
-    e.preventDefault();
-  }
-  // Cegah Ctrl+Shift+I (Inspect Element)
-  if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-    e.preventDefault();
-  }
-  // Cegah Ctrl+U (View Source)
-  if (e.ctrlKey && e.key === 'U') {
-    e.preventDefault();
-  }
-});
-
-// Mencegah klik kanan
-document.addEventListener('contextmenu', function (e) {
-  e.preventDefault();
-});
